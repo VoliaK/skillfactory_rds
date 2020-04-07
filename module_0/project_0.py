@@ -1,15 +1,28 @@
-def game_core_v2(number):
-    '''Сначала устанавливаем любое random число, а потом уменьшаем или увеличиваем его в зависимости от того, больше оно или меньше нужного.
-       Функция принимает загаданное число и возвращает число попыток'''
-    count = 1
-    predict = np.random.randint(1,101)
-    while number != predict:
-        count+=1
-        if number > predict: 
-            predict += 1
-        elif number < predict: 
-            predict -= 1
-    return(count) # выход из цикла, если угадали
+def binarySearch(number, start, end, count):
+    count += 1 # увеличиваем счетчик попыток на единицу
+    midpoint = (start + end)//2   # середина интервала   
 
-# Проверяем
-score_game(game_core_v2)
+    if midpoint == number: #если середина интервала равна искомому числу, то число найдено за count попыток.
+        return count #Возвращаем число попыток, за которое было найдено искомое число
+
+
+    elif midpoint < number: #если середина интервала меньше, чем искомое число,
+        return(binarySearch(number, midpoint, end, count)) #меняем нижнюю границу интервала (уменьшаем на половину интервал поиска)
+
+
+    else: #если середина интервала больше, чем искомое число,
+        return(binarySearch(number, start, midpoint, count)) #меняем верхнюю границу интервала (уменьшаем на половину интервал поиска)
+    
+def game_core_v3(number):
+    
+    count = 0 # счетчик попыток
+    #устанавливаем границы поиска:
+    start = 1 
+    end = 100
+    if number < 1 or number > 100:
+        print('Заганное число не подходит под условия игры')
+        return(0)
+    
+    return(binarySearch(number, start, end + 1, count)) #используем бинарный поиск
+	
+	
